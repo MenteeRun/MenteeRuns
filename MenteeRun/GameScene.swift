@@ -8,112 +8,39 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene{
     
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
-    var backgroundSpeed: CGFloat = 80.0 // speed may vary as you like
-    var deltaTime: TimeInterval = 0
-    var lastUpdateTimeInterval: TimeInterval = 0
+    //Nodes
+    var player : SKNode?
     
-    var CameraNode = SKCameraNode()
-    
-    var CameraMovePointPerSecond : CGFloat = 450.0
-    var LastUpdateTime : TimeInterval = 0.0
-    var dt : TimeInterval = 0.0
-    
+    //didmove
     override func didMove(to view: SKView) {
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+        player = childNode(withName: "Stefano")
         
-        // Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
-        
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }
     }
     
+}
+
+//MARK Touches
+
+extension GameScene{
     
-    func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }
-    }
-    
-    func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }
-    }
-    
-    func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }
-    }
-    
+    //Touch Began
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        <#code#>
     }
     
+    //Tousch Move
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+        <#code#>
     }
     
+    //Touch End
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-    }
-    
-    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        <#code#>
     }
     
     
-    override func update(_ currentTime: TimeInterval) {
-        if LastUpdateTime <= 0 {
-            dt = currentTime - LastUpdateTime
-        } else{
-            dt = 0
-        }
-        LastUpdateTime = currentTime
-        print(dt)
-        MoveCamera()
-    }
-}
-
-extension GameScene {
-    
-    func SetupCamera() {
-        addChild(CameraNode)
-        camera = CameraNode
-        CameraNode.position = CGPoint(x: frame.midX, y: frame.midY)
-    }
-    func MoveCamera () {
-        let amountToMove = CGPoint(x: CameraMovePointPerSecond * CGFloat(dt), y: 0.0 )
-        CameraNode.position = CGPoint(x:CameraNode.position.x + amountToMove.x, y:CameraNode.position.y + amountToMove.y)
-        
-    }
     
 }
-
