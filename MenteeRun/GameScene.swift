@@ -12,6 +12,9 @@ class GameScene: SKScene {
     
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
+    var backgroundSpeed: CGFloat = 80.0 // speed may vary as you like
+    var deltaTime: TimeInterval = 0
+    var lastUpdateTimeInterval: TimeInterval = 0
     
     override func didMove(to view: SKView) {
         
