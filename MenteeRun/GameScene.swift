@@ -16,6 +16,12 @@ class GameScene: SKScene {
     var deltaTime: TimeInterval = 0
     var lastUpdateTimeInterval: TimeInterval = 0
     
+    var CameraNode = SKCameraNode()
+    
+    var CameraMovePointPerSecond : CGFloat = 450.0
+    var LastUpdateTime : TimeInterval = 0.0
+    var dt : TimeInterval = 0.0
+    
     override func didMove(to view: SKView) {
         
         // Get label node from scene and store it for use later
@@ -68,7 +74,6 @@ class GameScene: SKScene {
         if let label = self.label {
             label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
         }
-        
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
@@ -86,6 +91,29 @@ class GameScene: SKScene {
     
     
     override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
+        if LastUpdateTime <= 0 {
+            dt = currentTime - LastUpdateTime
+        } else{
+            dt = 0
+        }
+        LastUpdateTime = currentTime
+        print(dt)
+        MoveCamera()
     }
 }
+
+extension GameScene {
+    
+    func SetupCamera() {
+        addChild(CameraNode)
+        camera = CameraNode
+        CameraNode.position = CGPoint(x: frame.midX, y: frame.midY)
+    }
+    func MoveCamera () {
+        let amountToMove = CGPoint(x: CameraMovePointPerSecond * CGFloat(dt), y: 0.0 )
+        CameraNode.position = CGPoint(x:CameraNode.position.x + amountToMove.x, y:CameraNode.position.y + amountToMove.y)
+        
+    }
+    
+}
+
